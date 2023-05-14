@@ -1,52 +1,31 @@
-// function.h
-#ifndef FUNCTION_H
-#define FUNCTION_H
+// donut.h
+#ifndef DONUT_H
+#define DONUT_H
 
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
+#define width 30
+#define height 30
 
-void clear_screen() {
-    printf("\x1b[2J");
-}
+const float pi = 3.1415926 ;
+const float dtheta = 0.07 ;
+const float dphi   = 0.02 ;
 
-void print_screen(float A, float B) {
-    printf("print_screen %f %f\n", A, B);
-    for (int j = 0; j < height; j++) {
-        for (int i = 0; i < width; i++)
-            putchar(output[j][i]);
-        putchar('\n');
-    }
-}
+const float omega_A = 0.07;
+const float omega_B = 0.04;
 
-void hide_cursor() {
-    printf("\033[?25l") ;
-}
+const float R1 = 1 ;
+const float R2 = 2 ;
+const float donut_distance = 5 ;
+const float render_distance = width*donut_distance*3/(8*(R1+R2));
 
-void reset_cursor() {
-    printf("\x1b[H");
-}
+const char pattern[] = ".,-~:;=!*#$@" ;
 
-void reset_values() {
-    memset(output, (int)' ', sizeof(output)) ;
-    memset(bestOOZ, 0, sizeof(bestOOZ)) ;
-}
+typedef struct Tcoordinate {
+    int x ;
+    int y ; 
+    float z ;
+} coordinate ;
 
-coordinate get_projection(float theta, float phi, float A, float B) {
-    return (coordinate){ .x=0, .y=0, .z=0 };
-}
-
-float get_luminance(float theta, float phi, float A, float B) {
-    return 0;
-}
-
-void get_output(float L, coordinate pos) {
-    // larger ooz means closer to viewer, reset output for closer z
-    float ooz = 1 / pos.z ; // one over z
-    if(ooz > bestOOZ[pos.y][pos.x]) {
-        bestOOZ[pos.y][pos.x] = ooz ;
-        output[pos.y][pos.x] = L > 5 ? '@' : '.';
-    }
-}
+char output[height][width] ;
+float bestOOZ[height][width] ;
 
 #endif
